@@ -1,0 +1,74 @@
+run:
+  timezone: "UTC"
+  history_path: "data/fx_history.csv"
+  runs_log_path: "logs/runs.csv"
+  alerts_log_path: "logs/alerts.csv"
+  signals_out_path: "data/latest_signals.csv"
+
+source:
+  name: "frankfurter"
+  base_url: "https://api.frankfurter.app"
+
+
+alerts:
+  cooldown_minutes: 30   # suppress re-alerts for the same pair+breach within this window
+
+history:
+  retain_days: 30        # drop history older than this; 0 = keep forever
+
+notify:
+  # Email (SMTP) — set these environment variables before running
+  # Gmail: generate an App Password at myaccount.google.com/apppasswords
+  smtp_host: ${SMTP_HOST}
+  smtp_port: ${SMTP_PORT}
+  smtp_user: ${SMTP_USER}
+  smtp_password: ${SMTP_PASSWORD}
+  email_from: ${SMTP_USER}
+  email_recipients:
+    - ${EMAIL_RECIPIENT_1}
+    - ${EMAIL_RECIPIENT_2}
+
+pairs:
+  - name: "GBPUSD"
+    base: "GBP"
+    quote: "USD"
+    thresholds:
+      pct_1run: 0.20
+      pct_60m: 0.40
+      pct_24h: 1.00
+
+  - name: "EURGBP"
+    base: "EUR"
+    quote: "GBP"
+    thresholds:
+      pct_1run: 0.21
+      pct_60m: 0.40
+      pct_24h: 1.00
+
+  - name: "GBPJPY"
+    base: "GBP"
+    quote: "JPY"
+    thresholds:
+      pct_1run: 0.25
+      pct_60m: 0.50
+      pct_24h: 1.20
+
+  - name: "EURUSD"
+    base: "EUR"
+    quote: "USD"
+    thresholds:
+      pct_1run: 0.20
+      pct_60m: 0.40
+      pct_24h: 1.00
+
+  # Gold (XAU/USD) — real-time price via Yahoo Finance (free, no API key)
+  # yahoo_symbol: GC=F = COMEX gold futures (USD per troy oz)
+  - name: "XAUUSD"
+    base: "XAU"
+    quote: "USD"
+    source_override: "yahoo_finance"
+    yahoo_symbol: "GC=F"
+    thresholds:
+      pct_1run: 0.30
+      pct_60m: 0.50
+      pct_24h: 1.50

@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env
+.pytest_cache/
+
+# OS
+.DS_Store
+
+# Data/log outputs (keep sample outputs later, not live)
+data/*.csv
+logs/*.csv
+logs/*.log
+
+# Optional notebooks (we won't use for MVP)
+*.ipynb
+.ipynb_checkpoints/
+config/pairs.yml
+.claude/
